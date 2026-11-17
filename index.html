@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Para Danna 💌</title>
+  <meta name="description" content="Una pequeña invitación" />
+  <meta property="og:title" content="Para Danna 💌" />
+  <meta property="og:description" content="Tengo algo que preguntarte…" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg1: #1d1a2f;
+      --bg2: #3a2a45;
+      --crema: #fbf3e8;
+      --rosa: #f2b5b0;
+      --durazno: #f6c89f;
+      --texto: #fbf3e8;
+      --suave: rgba(251, 243, 232, 0.7);
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: "Inter", system-ui, sans-serif;
+      color: var(--texto);
+      background: radial-gradient(ellipse at top, var(--bg2), var(--bg1) 70%);
+      overflow: hidden;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    /* Lucecitas flotando */
+    #luces { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+    .luz {
+      position: absolute; bottom: -20px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(246,200,159,.9), rgba(242,181,176,0) 70%);
+      animation: subir linear infinite;
+      opacity: 0;
+    }
+    @keyframes subir {
+      0%   { transform: translateY(0) translateX(0); opacity: 0; }
+      10%  { opacity: .8; }
+      90%  { opacity: .6; }
+      100% { transform: translateY(-110vh) translateX(40px); opacity: 0; }
+    }
+
+    .escena {
+      position: fixed; inset: 0; z-index: 1;
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      padding: 2rem; text-align: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 1s ease;
+    }
+    .escena.activa { opacity: 1; pointer-events: auto; }
+
+    /* Escena 1: sobre */
+    .sobre {
+      width: 220px; height: 150px; position: relative; cursor: pointer;
+      background: var(--crema); border-radius: 8px;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+      animation: flotar 3s ease-in-out infinite;
+    }
+    .sobre::before {
+      content: ""; position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 49.5%, #ecdcc8 50%) left/50% 100% no-repeat,
+                  linear-gradient(225deg, transparent 49.5%, #ecdcc8 50%) right/50% 100% no-repeat;
+      border-radius: 8px;
+    }
+    .sobre .solapa {
+      position: absolute; top: 0; left: 0; right: 0; height: 80px;
+      background: #f3e6d4; clip-path: polygon(0 0, 100% 0, 50% 100%);
+      border-radius: 8px 8px 0 0;
+      transform-origin: top; transition: transform .8s ease;
+    }
+    .sobre .sello {
+      position: absolute; top: 58px; left: 50%; transform: translateX(-50%);
+      width: 42px; height: 42px; border-radius: 50%;
+      background: #c96b6b; display: grid; place-items: center;
+      font-size: 20px; box-shadow: 0 3px 8px rgba(0,0,0,.25); z-index: 2;
+    }
+    .sobre.abierto .solapa { transform: rotateX(180deg); }
+    @keyframes flotar { 50% { transform: translateY(-10px); } }
+
+    .para {
+      font-family: "Fraunces", serif; font-weight: 300; font-style: italic;
+      font-size: 2.2rem; margin-top: 2.2rem;
+    }
+    .pista { margin-top: .8rem; color: var(--suave); font-size: .9rem; letter-spacing: .04em; }
+
+    /* Escena 2: frase */
+    .frase {
+      font-family: "Fraunces", serif; font-weight: 300;
+      font-size: clamp(1.4rem, 5vw, 2.2rem); line-height: 1.5;
+      max-width: 34ch; min-height: 6em;
+    }
+    .frase em { color: var(--durazno); font-style: italic; }
+    .cursor { display: inline-block; width: 2px; height: 1.1em; background: var(--durazno);
+      vertical-align: -0.15em; margin-left: 2px; animation: parpadeo 1s steps(1) infinite; }
+    @keyframes parpadeo { 50% { opacity: 0; } }
+
+    .btn {
+      font-family: "Inter", sans-serif; font-weight: 500; font-size: 1rem;
+      border: none; border-radius: 999px; padding: .95rem 1.8rem; cursor: pointer;
+      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+    }
+    .btn:active { transform: scale(.97); }
+    .btn-principal {
+      background: linear-gradient(135deg, var(--durazno), var(--rosa));
+      color: #3a2a45; box-shadow: 0 10px 30px rgba(242,181,176,.35);
+    }
+    .btn-principal:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(242,181,176,.5); }
+    .btn-secundario {
+      background: transparent; color: var(--texto);
+      border: 1px solid rgba(251,243,232,.35);
+    }
+    .btn-secundario:hover { background: rgba(251,243,232,.08); }
+    .aparece { opacity: 0; transform: translateY(12px); transition: all .8s ease; }
+    .aparece.visible { opacity: 1; transform: none; }
+    #seguir { margin-top: 2.5rem; }
+
+    /* Escena 3: pregunta */
+    .tarjeta {
+      background: rgba(251,243,232,.06);
+      border: 1px solid rgba(251,243,232,.15);
+      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+      border-radius: 24px; padding: 2.5rem 2rem; max-width: 420px; width: 100%;
+    }
+    .icono { font-size: 2.6rem; margin-bottom: 1rem; }
+    .tarjeta h2 {
+      font-family: "Fraunces", serif; font-weight: 500;
+      font-size: clamp(1.5rem, 5vw, 1.9rem); line-height: 1.3; margin-bottom: .8rem;
+    }
+    .tarjeta p { color: var(--suave); line-height: 1.6; margin-bottom: 1.8rem; }
+    .opciones { display: flex; flex-direction: column; gap: .8rem; }
+
+    /* Botón música */
+    #musica {
+      position: fixed; top: 1rem; right: 1rem; z-index: 5;
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(251,243,232,.1); border: 1px solid rgba(251,243,232,.2);
+      color: var(--texto); font-size: 1.1rem; cursor: pointer;
+      display: none; place-items: center;
+    }
+    #musica.mostrar { display: grid; }
+
+    @media (prefers-reduced-motion: reduce) {
+      .luz, .sobre { animation: none; }
+    }
+  </style>
+</head>
+<body>
+  <div id="luces"></div>
+  <div id="yt" style="position:fixed;width:1px;height:1px;left:-10px;top:-10px;opacity:0;pointer-events:none"></div>
+  <button id="musica" aria-label="Pausar o reproducir música">♪</button>
+
+  <!-- 1. Sobre -->
+  <section class="escena activa" id="e1">
+    <div class="sobre" id="sobre" role="button" aria-label="Abrir invitación">
+      <div class="solapa"></div>
+      <div class="sello">💌</div>
+    </div>
+    <h1 class="para">Para <span class="nombre"></span></h1>
+    <p class="pista">toca el sobre para abrirlo</p>
+  </section>
+
+  <!-- 2. Frase de entrada -->
+  <section class="escena" id="e2">
+    <p class="frase" id="frase"></p>
+    <button class="btn btn-principal aparece" id="seguir">Continuar →</button>
+  </section>
+
+  <!-- 3. Pregunta -->
+  <section class="escena" id="e3">
+    <div class="tarjeta">
+      <div class="icono">☕</div>
+      <h2>¿Tendrás un ratito este jueves, a tu salida del trabajo?</h2>
+      <p>Sé que entre el trabajo y los estudios tus días van a mil. Por eso no tiene que ser nada largo: un café, una caminata, lo que te provoque.</p>
+      <div class="opciones">
+        <button class="btn btn-principal" id="si">¡Sí, me encantaría! ✨</button>
+        <button class="btn btn-secundario" id="otro">Este jueves no puedo, pero otro día sí</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4a. Respuesta: sí -->
+  <section class="escena" id="e4si">
+    <div class="tarjeta">
+      <div class="icono">🌙</div>
+      <h2>¡Qué bien! Me alegra mucho.</h2>
+      <p>Te estoy llevando a WhatsApp para coordinar… Si no se abre solo, toca el botón.</p>
+      <div class="opciones">
+        <a class="btn btn-principal" id="wspSi" target="_blank" rel="noopener">Avisarle por WhatsApp</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4b. Respuesta: otro día -->
+  <section class="escena" id="e4otro">
+    <div class="tarjeta">
+      <div class="icono">🌷</div>
+      <h2>No te preocupes, de verdad.</h2>
+      <p>Sé que tienes mil cosas. Cuando tengas un espacio libre, me cuentas y lo cuadramos.</p>
+      <div class="opciones">
+        <a class="btn btn-principal" id="wspOtro" target="_blank" rel="noopener">Proponer otro día</a>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    /* ===================== CONFIGURA AQUÍ ===================== */
+    const CONFIG = {
+      nombre: "Danna",
+      // Tu número con código de país, sin + ni espacios. Perú = 51
+      whatsapp: "51926883449",
+      // ID del video de YouTube para la música de fondo (lo que va después de "v=")
+      youtube: "5pCbFvon3Rs",
+      inicioSegundos: 0, // desde qué segundo empieza la canción
+      // Respaldo: si YouTube no carga, usa "musica.mp3" de la misma carpeta.
+      // Si no existe, suena una melodía suave tipo cajita musical.
+      archivoMusica: "musica.mp3",
+      frase: "Entre clases, trabajo y mil pendientes, hay personas que hacen que los días se sientan <em>más ligeros</em>.\n\nConocerte ha sido una de esas cosas bonitas que no esperaba.",
+      mensajeSi: "¡Hola! 😊 Vi tu invitación y sí, me encantaría vernos el jueves a mi salida del trabajo. Salgo a las ",
+      mensajeOtro: "¡Hola! Abrí tu invitación 😊 Este jueves no puedo, pero ¿qué tal el "
+    };
+    /* ========================================================== */
+
+    document.querySelectorAll(".nombre").forEach(el => el.textContent = CONFIG.nombre);
+    document.getElementById("wspSi").href =
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.mensajeSi)}`;
+    document.getElementById("wspOtro").href =
+      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.mensajeOtro)}`;
+
+    // Lucecitas
+    const luces = document.getElementById("luces");
+    for (let i = 0; i < 22; i++) {
+      const l = document.createElement("span");
+      const s = 4 + Math.random() * 10;
+      l.className = "luz";
+      l.style.width = l.style.height = s + "px";
+      l.style.left = Math.random() * 100 + "vw";
+      l.style.animationDuration = 9 + Math.random() * 10 + "s";
+      l.style.animationDelay = Math.random() * 10 + "s";
+      luces.appendChild(l);
+    }
+
+    // Cambio de escenas
+    function ir(id) {
+      document.querySelectorAll(".escena").forEach(e => e.classList.remove("activa"));
+      document.getElementById(id).classList.add("activa");
+    }
+
+    // ---------- Música ----------
+    let sonando = false, audio = null, ctx = null, master = null, timer = null;
+
+    // Melodía de respaldo (cajita musical) por si no hay musica.mp3
+    const melodia = [
+      ["E5",1],["G5",1],["C6",2],["B5",1],["G5",1],["A5",2],
+      ["F5",1],["A5",1],["D6",2],["C6",1],["A5",1],["B5",2],
+      ["E5",1],["G5",1],["C6",2],["E6",1],["D6",1],["C6",2],
+      ["A5",1],["B5",1],["G5",2],["C6",4]
+    ];
+    const freq = n => {
+      const m = { C:-9, D:-7, E:-5, F:-4, G:-2, A:0, B:2 };
+      return 440 * Math.pow(2, (m[n[0]] + (parseInt(n[1]) - 4) * 12) / 12);
+    };
+    function nota(f, t, dur) {
+      const o = ctx.createOscillator(), g = ctx.createGain();
+      o.type = "triangle"; o.frequency.value = f;
+      g.gain.setValueAtTime(0, t);
+      g.gain.linearRampToValueAtTime(0.18, t + 0.02);
+      g.gain.exponentialRampToValueAtTime(0.001, t + dur * 2.5);
+      o.connect(g); g.connect(master);
+      o.start(t); o.stop(t + dur * 2.6);
+    }
+    function tocarMelodia() {
+      const pulso = 0.42;
+      let t = ctx.currentTime + 0.1, total = 0;
+      melodia.forEach(([n, d]) => {
+        nota(freq(n), t, pulso);
+        nota(freq(n) / 2, t, pulso * 0.8); // octava baja suave
+        t += d * pulso; total += d * pulso;
+      });
+      timer = setTimeout(tocarMelodia, total * 1000 + 800);
+    }
+    function iniciarSintetizador() {
+      ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
+      master = master || ctx.createGain();
+      master.gain.value = 0.6;
+      master.connect(ctx.destination);
+      ctx.resume();
+      tocarMelodia();
+    }
+
+    // ---------- YouTube ----------
+    let yt = null, ytListo = false, usandoYT = false;
+    const tag = document.createElement("script");
+    tag.src = "https://www.youtube.com/iframe_api";
+    document.head.appendChild(tag);
+    window.onYouTubeIframeAPIReady = () => {
+      yt = new YT.Player("yt", {
+        width: 1, height: 1, videoId: CONFIG.youtube,
+        playerVars: { autoplay: 0, controls: 0, playsinline: 1, loop: 1,
+                      playlist: CONFIG.youtube, start: CONFIG.inicioSegundos },
+        events: {
+          onReady: () => { ytListo = true; yt.setVolume(60); },
+          onError: () => { if (usandoYT) { usandoYT = false; iniciarRespaldo(); } }
+        }
+      });
+    };
+
+    function iniciarMusica() {
+      document.getElementById("musica").classList.add("mostrar");
+      if (CONFIG.youtube && ytListo) {
+        usandoYT = true; sonando = true;
+        yt.playVideo();
+        // si en 4 s no arrancó (video bloqueado), usar respaldo
+        setTimeout(() => {
+          if (usandoYT && yt.getPlayerState() !== YT.PlayerState.PLAYING &&
+              yt.getPlayerState() !== YT.PlayerState.BUFFERING) {
+            usandoYT = false; iniciarRespaldo();
+          }
+        }, 4000);
+        return;
+      }
+      iniciarRespaldo();
+    }
+
+    function iniciarRespaldo() {
+      audio = new Audio(CONFIG.archivoMusica);
+      audio.loop = true; audio.volume = 0.5;
+      audio.play().then(() => { sonando = true; })
+        .catch(() => { audio = null; iniciarSintetizador(); sonando = true; });
+      audio.addEventListener("error", () => {
+        if (audio) { audio = null; iniciarSintetizador(); sonando = true; }
+      });
+    }
+
+    document.getElementById("musica").addEventListener("click", () => {
+      const b = document.getElementById("musica");
+      if (usandoYT) {
+        sonando ? yt.pauseVideo() : yt.playVideo();
+      } else if (audio) {
+        sonando ? audio.pause() : audio.play();
+      } else if (ctx) {
+        sonando ? ctx.suspend() : ctx.resume();
+      }
+      sonando = !sonando;
+      b.textContent = sonando ? "♪" : "🔇";
+    });
+
+    // ---------- Texto que se escribe solo ----------
+    function escribir(el, html, alTerminar) {
+      // separa etiquetas para no cortarlas
+      const partes = html.replace(/\n/g, "<br>").match(/<[^>]+>|[^<]/g);
+      let i = 0, salida = "";
+      const cursor = '<span class="cursor"></span>';
+      (function paso() {
+        if (i >= partes.length) { el.innerHTML = salida; alTerminar && alTerminar(); return; }
+        const p = partes[i++];
+        salida += p;
+        el.innerHTML = salida + cursor;
+        const pausa = p.startsWith("<") ? 0 : (".,".includes(p) ? 380 : 45);
+        setTimeout(paso, pausa);
+      })();
+    }
+
+    // ---------- Flujo ----------
+    let abierto = false;
+    function abrir() {
+      if (abierto) return; abierto = true;
+      iniciarMusica();
+      document.getElementById("sobre").classList.add("abierto");
+      setTimeout(() => {
+        ir("e2");
+        setTimeout(() => {
+          escribir(document.getElementById("frase"), CONFIG.frase, () =>
+            document.getElementById("seguir").classList.add("visible"));
+        }, 900);
+      }, 1100);
+    }
+    document.getElementById("sobre").addEventListener("click", abrir);
+    document.getElementById("e1").addEventListener("click", abrir);
+    document.getElementById("seguir").addEventListener("click", () => ir("e3"));
+    document.getElementById("si").addEventListener("click", () => {
+      ir("e4si");
+      setTimeout(() => { window.location.href = document.getElementById("wspSi").href; }, 1200);
+    });
+    document.getElementById("otro").addEventListener("click", () => ir("e4otro"));
+  </script>
+</body>
+</html>
