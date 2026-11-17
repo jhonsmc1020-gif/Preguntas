@@ -361,7 +361,7 @@
       // Tu número con código de país, sin + ni espacios. Perú = 51
       whatsapp: "51926883449",
       // ID del video de YouTube para la música de fondo (lo que va después de "v=")
-      youtube: "Qz9gmiLBVFA", // video oficial de Tacones Rojos
+      youtube: "", // vacío = usa musica.mp3 (recomendado). Para YouTube pon el ID, ej. "Qz9gmiLBVFA"
       inicioSegundos: 0, // desde qué segundo empieza la canción
       // Si subes "musica.mp3" al repositorio, se usa ese en lugar de YouTube.
       // Si nada funciona, suena una melodía suave tipo cajita musical.
@@ -509,9 +509,14 @@
 
     // YouTube
     let yt = null, ytListo = false, usandoYT = false;
-    const tag = document.createElement("script");
-    tag.src = "https://www.youtube.com/iframe_api";
-    document.head.appendChild(tag);
+    if (CONFIG.youtube) {
+      const tag = document.createElement("script");
+      tag.src = "https://www.youtube.com/iframe_api";
+      document.head.appendChild(tag);
+    }
+    // Precarga del mp3 para que suene apenas toque el sobre
+    const precarga = new Audio(CONFIG.archivoMusica);
+    precarga.preload = "auto"; precarga.loop = true;
     window.onYouTubeIframeAPIReady = () => {
       yt = new YT.Player("yt", {
         width: 200, height: 200, videoId: CONFIG.youtube,
@@ -533,7 +538,7 @@
 
     function iniciarMusica() {
       $("musica").classList.add("mostrar");
-      if (hayMp3) { iniciarRespaldo(); return; }
+      if (hayMp3 || !CONFIG.youtube) { iniciarRespaldo(); return; }
       if (CONFIG.youtube && ytListo) {
         usandoYT = true; sonando = true;
         yt.playVideo();
@@ -549,7 +554,7 @@
     }
 
     function iniciarRespaldo() {
-      audio = new Audio(CONFIG.archivoMusica);
+      audio = precarga;
       audio.loop = true; audio.volume = 0.5;
       audio.play().then(() => { sonando = true; })
         .catch(() => { audio = null; iniciarSintetizador(); sonando = true; });
@@ -594,7 +599,7 @@
         setTimeout(() => {
           escribir($("frase"), CONFIG.frase, () => $("seguir").classList.add("visible"));
         }, 900);
-      }, 3500);
+      }, 5500);
     }
     $("e1").addEventListener("click", abrir);
     $("seguir").addEventListener("click", () => ir("e3"));
