@@ -253,6 +253,19 @@
     /* Reproductor YouTube escondido (YouTube exige mínimo 200x200) */
     #ytCaja { position: fixed; width: 200px; height: 200px; left: 0; bottom: 0; opacity: .01; pointer-events: none; z-index: -1; overflow: hidden; }
 
+    /* Pantallas bajas (iPhone con barras de Safari): todo más compacto y sin chocar con el botón de música */
+    @media (max-height: 740px) {
+      .escena { padding: 4.2rem 1.2rem 3rem; }
+      .tarjeta { padding: 1.7rem 1.4rem 1.5rem; }
+      .taza { width: 68px; height: 68px; margin-bottom: .6rem; }
+      .fecha { margin-bottom: .8rem; }
+      .tarjeta h2 { margin-bottom: .6rem; }
+      .tarjeta p { margin-bottom: 1.2rem; font-size: .93rem; line-height: 1.55; }
+      .btn { padding: .9rem 1.5rem; }
+      .progreso { bottom: 1.1rem; }
+    }
+    #musica { top: calc(1rem + env(safe-area-inset-top)); }
+
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after { animation: none !important; }
     }
@@ -581,7 +594,7 @@
         setTimeout(() => {
           escribir($("frase"), CONFIG.frase, () => $("seguir").classList.add("visible"));
         }, 900);
-      }, 2000);
+      }, 5500);
     }
     $("e1").addEventListener("click", abrir);
     $("seguir").addEventListener("click", () => ir("e3"));
