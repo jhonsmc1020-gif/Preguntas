@@ -2,7 +2,6 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
-  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Para Danna ✨</title>
   <meta name="description" content="Una pequeña invitación" />
@@ -153,7 +152,7 @@
 </head>
 <body>
   <div id="luces"></div>
-  <div id="ytCaja" style="position:fixed;width:200px;height:200px;left:0;bottom:0;opacity:0.01;pointer-events:none;z-index:-1;overflow:hidden"><div id="yt"></div></div>
+  <div id="yt" style="position:fixed;width:1px;height:1px;left:-10px;top:-10px;opacity:0;pointer-events:none"></div>
   <button id="musica" aria-label="Pausar o reproducir música">♪</button>
 
   <!-- 1. Sobre -->
@@ -216,7 +215,7 @@
       // Tu número con código de país, sin + ni espacios. Perú = 51
       whatsapp: "51926883449",
       // ID del video de YouTube para la música de fondo (lo que va después de "v=")
-      youtube: "hFS8VV0SraQ",
+      youtube: "Qz9gmiLBVFA", // video oficial de Tacones Rojos
       inicioSegundos: 0, // desde qué segundo empieza la canción
       // Respaldo: si YouTube no carga, usa "musica.mp3" de la misma carpeta.
       // Si no existe, suena una melodía suave tipo cajita musical.
@@ -301,10 +300,9 @@
     document.head.appendChild(tag);
     window.onYouTubeIframeAPIReady = () => {
       yt = new YT.Player("yt", {
-        width: 200, height: 200, videoId: CONFIG.youtube,
+        width: 1, height: 1, videoId: CONFIG.youtube,
         playerVars: { autoplay: 0, controls: 0, playsinline: 1, loop: 1,
-                      playlist: CONFIG.youtube, start: CONFIG.inicioSegundos,
-                      origin: location.origin },
+                      playlist: CONFIG.youtube, start: CONFIG.inicioSegundos },
         events: {
           onReady: () => { ytListo = true; yt.setVolume(60); },
           onError: () => { if (usandoYT) { usandoYT = false; iniciarRespaldo(); } }
