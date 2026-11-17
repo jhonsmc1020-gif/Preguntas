@@ -2,164 +2,285 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Para Danna ✨</title>
   <meta name="description" content="Una pequeña invitación" />
   <meta property="og:title" content="Para Danna ✨" />
   <meta property="og:description" content="Tengo algo que preguntarte…" />
+  <meta name="theme-color" content="#1d1a2f" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,500;1,9..144,300;1,9..144,400&family=Inter:wght@400;500;600&family=Caveat:wght@500;700&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg1: #1d1a2f;
-      --bg2: #3a2a45;
+      --bg1: #14121f;
+      --bg2: #2b2040;
       --crema: #fbf3e8;
+      --papel: #fffaf2;
       --rosa: #f2b5b0;
       --durazno: #f6c89f;
+      --dorado: #e8a15a;
       --texto: #fbf3e8;
-      --suave: rgba(251, 243, 232, 0.7);
+      --suave: rgba(251, 243, 232, 0.72);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     html, body { height: 100%; }
     body {
       font-family: "Inter", system-ui, sans-serif;
       color: var(--texto);
-      background: radial-gradient(ellipse at top, var(--bg2), var(--bg1) 70%);
+      background: radial-gradient(ellipse 120% 80% at 50% 0%, var(--bg2), var(--bg1) 70%);
       overflow: hidden;
       -webkit-tap-highlight-color: transparent;
+      user-select: none; -webkit-user-select: none;
     }
 
-    /* Lucecitas flotando */
-    #luces { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
-    .luz {
-      position: absolute; bottom: -20px;
-      border-radius: 50%;
-      background: radial-gradient(circle, rgba(246,200,159,.9), rgba(242,181,176,0) 70%);
-      animation: subir linear infinite;
-      opacity: 0;
+    /* ---------- Fondo: aurora + estrellas ---------- */
+    .aurora { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+    .aurora span {
+      position: absolute; border-radius: 50%; filter: blur(70px); opacity: .45;
+      animation: deriva 18s ease-in-out infinite alternate;
     }
-    @keyframes subir {
-      0%   { transform: translateY(0) translateX(0); opacity: 0; }
-      10%  { opacity: .8; }
-      90%  { opacity: .6; }
-      100% { transform: translateY(-110vh) translateX(40px); opacity: 0; }
+    .aurora span:nth-child(1) { width: 60vmax; height: 60vmax; background: #5b3a72; top: -25vmax; left: -15vmax; }
+    .aurora span:nth-child(2) { width: 50vmax; height: 50vmax; background: #8a4f5e; bottom: -25vmax; right: -15vmax; animation-delay: -6s; }
+    .aurora span:nth-child(3) { width: 35vmax; height: 35vmax; background: #c07a4f; top: 40%; left: 55%; opacity: .2; animation-delay: -12s; }
+    @keyframes deriva {
+      0% { transform: translate(0,0) scale(1); }
+      100% { transform: translate(6vmax, 4vmax) scale(1.15); }
     }
+    #cielo, #confeti { position: fixed; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    #cielo { z-index: 0; }
+    #confeti { z-index: 20; }
 
+    /* ---------- Escenas ---------- */
     .escena {
-      position: fixed; inset: 0; z-index: 1;
+      position: fixed; inset: 0; z-index: 2;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      padding: 2rem; text-align: center;
+      padding: 2rem 1.4rem 4rem; text-align: center;
       opacity: 0; pointer-events: none;
-      transition: opacity 1s ease;
+      transform: scale(.96); filter: blur(8px);
+      transition: opacity .9s ease, transform .9s ease, filter .9s ease;
     }
-    .escena.activa { opacity: 1; pointer-events: auto; }
+    .escena.activa { opacity: 1; pointer-events: auto; transform: none; filter: none; }
+    .escena.sale { opacity: 0; transform: scale(1.06); filter: blur(8px); }
 
-    /* Escena 1: sobre */
-    .sobre {
-      width: 220px; height: 150px; position: relative; cursor: pointer;
-      background: var(--crema); border-radius: 8px;
-      box-shadow: 0 20px 50px rgba(0,0,0,.35);
-      animation: flotar 3s ease-in-out infinite;
+    /* ---------- Escena 1: sobre ---------- */
+    .sobre-wrap { position: relative; perspective: 900px; animation: flotar 3.4s ease-in-out infinite; cursor: pointer; }
+    .sobre-wrap::after {
+      content: ""; position: absolute; left: 10%; right: 10%; bottom: -34px; height: 18px;
+      background: radial-gradient(ellipse, rgba(0,0,0,.45), transparent 70%);
+      animation: sombra 3.4s ease-in-out infinite;
     }
-    .sobre::before {
+    @keyframes flotar { 50% { transform: translateY(-12px) rotate(-1deg); } }
+    @keyframes sombra { 50% { transform: scaleX(.85); opacity: .6; } }
+
+    .sobre { width: 270px; height: 180px; position: relative; }
+    .sobre .fondo {
+      position: absolute; inset: 0; border-radius: 10px;
+      background: linear-gradient(160deg, #efe0cb, #e3cfb4);
+      box-shadow: 0 25px 60px rgba(0,0,0,.45);
+    }
+    .sobre .carta {
+      position: absolute; left: 14px; right: 14px; top: 12px; height: 150px;
+      background: var(--papel); border-radius: 6px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.12);
+      display: flex; flex-direction: column; align-items: center; justify-content: center;
+      color: #4a3550; z-index: 1;
+      transition: transform 1s cubic-bezier(.2,.8,.2,1) .55s;
+    }
+    .carta .linea { font-family: "Caveat", cursive; font-size: 1.7rem; line-height: 1.1; }
+    .carta .mini { font-size: .7rem; letter-spacing: .25em; text-transform: uppercase; opacity: .55; margin-top: .4rem; }
+    .sobre .bolsillo {
+      position: absolute; inset: 0; z-index: 2; border-radius: 10px; overflow: hidden; pointer-events: none;
+    }
+    .bolsillo::before, .bolsillo::after, .bolsillo i {
       content: ""; position: absolute; inset: 0;
-      background: linear-gradient(135deg, transparent 49.5%, #ecdcc8 50%) left/50% 100% no-repeat,
-                  linear-gradient(225deg, transparent 49.5%, #ecdcc8 50%) right/50% 100% no-repeat;
-      border-radius: 8px;
     }
+    .bolsillo::before { background: #f3e6d4; clip-path: polygon(0 0, 52% 56%, 0 100%); }
+    .bolsillo::after  { background: #f0e1cc; clip-path: polygon(100% 0, 48% 56%, 100% 100%); }
+    .bolsillo i { background: linear-gradient(0deg, #f6ead9, #efdfc8); clip-path: polygon(0 100%, 50% 48%, 100% 100%); }
     .sobre .solapa {
-      position: absolute; top: 0; left: 0; right: 0; height: 80px;
-      background: #f3e6d4; clip-path: polygon(0 0, 100% 0, 50% 100%);
-      border-radius: 8px 8px 0 0;
-      transform-origin: top; transition: transform .8s ease;
+      position: absolute; top: 0; left: 0; right: 0; height: 104px; z-index: 3;
+      background: linear-gradient(180deg, #f6ead9, #ead9c1);
+      clip-path: polygon(0 0, 100% 0, 50% 100%);
+      transform-origin: top center; transition: transform .8s ease, z-index 0s .4s;
+      filter: drop-shadow(0 3px 3px rgba(0,0,0,.15));
     }
     .sobre .sello {
-      position: absolute; top: 58px; left: 50%; transform: translateX(-50%);
-      width: 42px; height: 42px; border-radius: 50%;
-      background: #e8a15a; display: grid; place-items: center;
-      font-size: 20px; box-shadow: 0 3px 8px rgba(0,0,0,.25); z-index: 2;
+      position: absolute; top: 78px; left: 50%; z-index: 4;
+      width: 52px; height: 52px; margin-left: -26px; border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #f5bd7e, var(--dorado) 55%, #b9712f);
+      display: grid; place-items: center; font-size: 22px;
+      box-shadow: 0 4px 10px rgba(0,0,0,.3), inset 0 -3px 6px rgba(0,0,0,.2);
+      transition: transform .5s ease, opacity .5s ease;
     }
-    .sobre.abierto .solapa { transform: rotateX(180deg); }
-    @keyframes flotar { 50% { transform: translateY(-10px); } }
+    .sello::before {
+      content: ""; position: absolute; inset: -8px; border-radius: 50%;
+      border: 2px solid rgba(246,200,159,.6); animation: pulso 2s ease-out infinite;
+    }
+    @keyframes pulso { 0% { transform: scale(.8); opacity: 1; } 100% { transform: scale(1.5); opacity: 0; } }
+
+    .sobre.abierto .sello { transform: scale(0) rotate(90deg); opacity: 0; }
+    .sobre.abierto .solapa { transform: rotateX(180deg); z-index: 0; }
+    .sobre.abierto .carta { transform: translateY(-95px); }
 
     .para {
       font-family: "Fraunces", serif; font-weight: 300; font-style: italic;
-      font-size: 2.2rem; margin-top: 2.2rem;
+      font-size: 2.4rem; margin-top: 3.2rem;
+      background: linear-gradient(90deg, var(--crema), var(--durazno), var(--crema));
+      background-size: 200% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
+      animation: brillo 4s linear infinite;
     }
-    .pista { margin-top: .8rem; color: var(--suave); font-size: .9rem; letter-spacing: .04em; }
+    @keyframes brillo { to { background-position: 200% center; } }
+    .pista {
+      margin-top: .9rem; color: var(--suave); font-size: .85rem; letter-spacing: .12em; text-transform: lowercase;
+      animation: respira 2.2s ease-in-out infinite;
+    }
+    @keyframes respira { 50% { opacity: .35; } }
 
-    /* Escena 2: frase */
+    /* ---------- Escena 2: frase ---------- */
+    .comillas { font-family: "Fraunces", serif; font-size: 4rem; line-height: .5; color: var(--durazno); opacity: .5; margin-bottom: 1rem; }
     .frase {
       font-family: "Fraunces", serif; font-weight: 300;
-      font-size: clamp(1.4rem, 5vw, 2.2rem); line-height: 1.5;
-      max-width: 34ch; min-height: 6em;
+      font-size: clamp(1.35rem, 5vw, 2.1rem); line-height: 1.55;
+      max-width: 32ch; min-height: 7.5em;
+      text-shadow: 0 0 30px rgba(246,200,159,.15);
     }
-    .frase em { color: var(--durazno); font-style: italic; }
-    .cursor { display: inline-block; width: 2px; height: 1.1em; background: var(--durazno);
-      vertical-align: -0.15em; margin-left: 2px; animation: parpadeo 1s steps(1) infinite; }
+    .frase em { color: var(--durazno); font-style: italic; font-weight: 400; }
+    .cursor { display: inline-block; width: 2px; height: 1.05em; background: var(--durazno);
+      vertical-align: -0.12em; margin-left: 3px; animation: parpadeo 1s steps(1) infinite; }
     @keyframes parpadeo { 50% { opacity: 0; } }
 
+    /* ---------- Botones ---------- */
     .btn {
-      font-family: "Inter", sans-serif; font-weight: 500; font-size: 1rem;
-      border: none; border-radius: 999px; padding: .95rem 1.8rem; cursor: pointer;
-      transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+      display: inline-flex; align-items: center; justify-content: center; gap: .5rem;
+      font-family: "Inter", sans-serif; font-weight: 600; font-size: 1rem; text-decoration: none;
+      border: none; border-radius: 999px; padding: 1rem 1.8rem; cursor: pointer; position: relative; overflow: hidden;
+      transition: transform .2s ease, box-shadow .25s ease, background .25s ease;
     }
-    .btn:active { transform: scale(.97); }
+    .btn:active { transform: scale(.96); }
     .btn-principal {
       background: linear-gradient(135deg, var(--durazno), var(--rosa));
       color: #3a2a45; box-shadow: 0 10px 30px rgba(242,181,176,.35);
     }
-    .btn-principal:hover { transform: translateY(-2px); box-shadow: 0 14px 34px rgba(242,181,176,.5); }
+    .btn-principal::after {
+      content: ""; position: absolute; top: 0; left: -60%; width: 40%; height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.55), transparent);
+      transform: skewX(-20deg); animation: destello 3.2s ease-in-out infinite;
+    }
+    @keyframes destello { 0%, 60% { left: -60%; } 100% { left: 130%; } }
+    .btn-principal:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(242,181,176,.5); }
     .btn-secundario {
-      background: transparent; color: var(--texto);
-      border: 1px solid rgba(251,243,232,.35);
+      background: rgba(251,243,232,.04); color: var(--texto); font-weight: 500;
+      border: 1px solid rgba(251,243,232,.28);
     }
-    .btn-secundario:hover { background: rgba(251,243,232,.08); }
-    .aparece { opacity: 0; transform: translateY(12px); transition: all .8s ease; }
-    .aparece.visible { opacity: 1; transform: none; }
-    #seguir { margin-top: 2.5rem; }
+    .btn-secundario:hover { background: rgba(251,243,232,.1); }
+    .aparece { opacity: 0; transform: translateY(14px); transition: all .8s ease; pointer-events: none; }
+    .aparece.visible { opacity: 1; transform: none; pointer-events: auto; }
+    #seguir { margin-top: 2.2rem; }
+    #seguir .flecha { display: inline-block; animation: empuja 1.4s ease-in-out infinite; }
+    @keyframes empuja { 50% { transform: translateX(4px); } }
 
-    /* Escena 3: pregunta */
+    /* ---------- Tarjetas ---------- */
     .tarjeta {
-      background: rgba(251,243,232,.06);
-      border: 1px solid rgba(251,243,232,.15);
-      backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-      border-radius: 24px; padding: 2.5rem 2rem; max-width: 420px; width: 100%;
+      position: relative;
+      background: linear-gradient(160deg, rgba(251,243,232,.10), rgba(251,243,232,.03));
+      border: 1px solid rgba(251,243,232,.16);
+      backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+      border-radius: 28px; padding: 2.4rem 1.8rem 2rem; max-width: 420px; width: 100%;
+      box-shadow: 0 30px 80px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.08);
     }
-    .icono { font-size: 2.6rem; margin-bottom: 1rem; }
+    .tarjeta::before {
+      content: ""; position: absolute; inset: -1px; border-radius: inherit; padding: 1px; pointer-events: none;
+      background: linear-gradient(140deg, rgba(246,200,159,.6), transparent 35%, transparent 65%, rgba(242,181,176,.5));
+      -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+      -webkit-mask-composite: xor; mask-composite: exclude;
+    }
     .tarjeta h2 {
       font-family: "Fraunces", serif; font-weight: 500;
-      font-size: clamp(1.5rem, 5vw, 1.9rem); line-height: 1.3; margin-bottom: .8rem;
+      font-size: clamp(1.45rem, 5vw, 1.85rem); line-height: 1.3; margin-bottom: .9rem;
     }
-    .tarjeta p { color: var(--suave); line-height: 1.6; margin-bottom: 1.8rem; }
-    .opciones { display: flex; flex-direction: column; gap: .8rem; }
+    .tarjeta p { color: var(--suave); line-height: 1.65; margin-bottom: 1.6rem; font-size: .97rem; }
+    .opciones { display: flex; flex-direction: column; gap: .75rem; }
 
-    /* Botón música */
-    #musica {
-      position: fixed; top: 1rem; right: 1rem; z-index: 5;
-      width: 44px; height: 44px; border-radius: 50%;
-      background: rgba(251,243,232,.1); border: 1px solid rgba(251,243,232,.2);
-      color: var(--texto); font-size: 1.1rem; cursor: pointer;
-      display: none; place-items: center;
+    /* Taza de café animada */
+    .taza { width: 92px; height: 92px; margin: 0 auto 1rem; display: block; }
+    .vapor path { fill: none; stroke: var(--crema); stroke-width: 3; stroke-linecap: round; opacity: 0; animation: vapor 3s ease-in-out infinite; }
+    .vapor path:nth-child(2) { animation-delay: .8s; }
+    .vapor path:nth-child(3) { animation-delay: 1.6s; }
+    @keyframes vapor {
+      0% { opacity: 0; transform: translateY(6px); }
+      40% { opacity: .7; }
+      100% { opacity: 0; transform: translateY(-10px); }
     }
-    #musica.mostrar { display: grid; }
+
+    .fecha {
+      display: inline-flex; align-items: center; gap: .5rem;
+      padding: .45rem .95rem; margin-bottom: 1.1rem; border-radius: 999px;
+      background: rgba(246,200,159,.12); border: 1px solid rgba(246,200,159,.3);
+      color: var(--durazno); font-size: .8rem; font-weight: 500; letter-spacing: .01em; white-space: nowrap;
+    }
+    .fecha::first-letter { text-transform: uppercase; }
+    .fecha .punto { width: 7px; height: 7px; border-radius: 50%; background: var(--durazno); box-shadow: 0 0 10px var(--durazno); animation: respira 1.6s ease-in-out infinite; }
+
+    .icono-grande { font-size: 3rem; margin-bottom: .8rem; display: inline-block; animation: flotar 3s ease-in-out infinite; }
+
+    /* ---------- Progreso ---------- */
+    .progreso {
+      position: fixed; bottom: 1.6rem; left: 50%; transform: translateX(-50%); z-index: 5;
+      display: flex; gap: .5rem; opacity: 0; transition: opacity .6s ease;
+    }
+    .progreso.ver { opacity: 1; }
+    .progreso i { width: 7px; height: 7px; border-radius: 99px; background: rgba(251,243,232,.25); transition: all .5s ease; }
+    .progreso i.on { width: 24px; background: var(--durazno); }
+
+    /* ---------- Botón música (ecualizador) ---------- */
+    #musica {
+      position: fixed; top: 1rem; right: 1rem; z-index: 6;
+      width: 46px; height: 46px; border-radius: 50%;
+      background: rgba(251,243,232,.08); border: 1px solid rgba(251,243,232,.2);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      cursor: pointer; display: none; align-items: flex-end; justify-content: center; gap: 3px; padding-bottom: 14px;
+    }
+    #musica.mostrar { display: flex; }
+    #musica span { width: 3px; height: 16px; border-radius: 2px; background: var(--durazno); transform-origin: bottom; animation: eq 1s ease-in-out infinite; }
+    #musica span:nth-child(2) { animation-delay: .2s; }
+    #musica span:nth-child(3) { animation-delay: .4s; }
+    #musica span:nth-child(4) { animation-delay: .1s; }
+    #musica.pausa span { animation: none; transform: scaleY(.25); }
+    @keyframes eq { 0%,100% { transform: scaleY(.3); } 50% { transform: scaleY(1); } }
+
+    /* Reproductor YouTube escondido (YouTube exige mínimo 200x200) */
+    #ytCaja { position: fixed; width: 200px; height: 200px; left: 0; bottom: 0; opacity: .01; pointer-events: none; z-index: -1; overflow: hidden; }
 
     @media (prefers-reduced-motion: reduce) {
-      .luz, .sobre { animation: none; }
+      *, *::before, *::after { animation: none !important; }
     }
   </style>
 </head>
 <body>
-  <div id="luces"></div>
-  <div id="yt" style="position:fixed;width:1px;height:1px;left:-10px;top:-10px;opacity:0;pointer-events:none"></div>
-  <button id="musica" aria-label="Pausar o reproducir música">♪</button>
+  <div class="aurora"><span></span><span></span><span></span></div>
+  <canvas id="cielo"></canvas>
+  <canvas id="confeti"></canvas>
+  <div id="ytCaja"><div id="yt"></div></div>
+
+  <button id="musica" aria-label="Pausar o reproducir música"><span></span><span></span><span></span><span></span></button>
+  <div class="progreso" id="progreso"><i></i><i></i><i></i></div>
 
   <!-- 1. Sobre -->
   <section class="escena activa" id="e1">
-    <div class="sobre" id="sobre" role="button" aria-label="Abrir invitación">
-      <div class="solapa"></div>
-      <div class="sello">✨</div>
+    <div class="sobre-wrap" id="sobreWrap" role="button" aria-label="Abrir invitación">
+      <div class="sobre" id="sobre">
+        <div class="fondo"></div>
+        <div class="carta">
+          <div class="linea">Tengo algo</div>
+          <div class="linea">que preguntarte…</div>
+          <div class="mini">✦ para ti ✦</div>
+        </div>
+        <div class="bolsillo"><i></i></div>
+        <div class="solapa"></div>
+        <div class="sello">✨</div>
+      </div>
     </div>
     <h1 class="para">Para <span class="nombre"></span></h1>
     <p class="pista">toca el sobre para abrirlo</p>
@@ -167,14 +288,26 @@
 
   <!-- 2. Frase de entrada -->
   <section class="escena" id="e2">
+    <div class="comillas">“</div>
     <p class="frase" id="frase"></p>
-    <button class="btn btn-principal aparece" id="seguir">Continuar →</button>
+    <button class="btn btn-principal aparece" id="seguir">Continuar <span class="flecha">→</span></button>
   </section>
 
   <!-- 3. Pregunta -->
   <section class="escena" id="e3">
     <div class="tarjeta">
-      <div class="icono">☕</div>
+      <svg class="taza" viewBox="0 0 100 100" aria-hidden="true">
+        <g class="vapor">
+          <path d="M38 34 q-6 -8 0 -16 q6 -8 0 -16" />
+          <path d="M50 34 q-6 -8 0 -16 q6 -8 0 -16" />
+          <path d="M62 34 q-6 -8 0 -16 q6 -8 0 -16" />
+        </g>
+        <path d="M24 42 h52 v22 a20 20 0 0 1 -20 20 h-12 a20 20 0 0 1 -20 -20z" fill="#f6c89f" />
+        <path d="M76 48 h6 a10 10 0 0 1 0 20 h-7" fill="none" stroke="#f6c89f" stroke-width="5" />
+        <ellipse cx="50" cy="42" rx="26" ry="5" fill="#8a5a3c" />
+        <ellipse cx="50" cy="90" rx="34" ry="4" fill="rgba(251,243,232,.25)" />
+      </svg>
+      <div class="fecha"><span class="punto"></span><span id="fechaTxt">Este jueves · a tu salida</span></div>
       <h2>¿Tendrás un ratito este jueves, a tu salida del trabajo?</h2>
       <p>Sé que entre el trabajo y los estudios tus días van a mil. Por eso no tiene que ser nada largo: un café, una caminata, lo que te provoque.</p>
       <div class="opciones">
@@ -187,11 +320,11 @@
   <!-- 4a. Respuesta: sí -->
   <section class="escena" id="e4si">
     <div class="tarjeta">
-      <div class="icono">🌙</div>
+      <div class="icono-grande">🌙</div>
       <h2>¡Qué bien! Me alegra mucho.</h2>
       <p>Te estoy llevando a WhatsApp para coordinar… Si no se abre solo, toca el botón.</p>
       <div class="opciones">
-        <a class="btn btn-principal" id="wspSi" target="_blank" rel="noopener">Avisarle por WhatsApp</a>
+        <a class="btn btn-principal" id="wspSi" target="_blank" rel="noopener">Abrir WhatsApp</a>
       </div>
     </div>
   </section>
@@ -199,7 +332,7 @@
   <!-- 4b. Respuesta: otro día -->
   <section class="escena" id="e4otro">
     <div class="tarjeta">
-      <div class="icono">🌷</div>
+      <div class="icono-grande">🌷</div>
       <h2>No te preocupes, de verdad.</h2>
       <p>Sé que tienes mil cosas. Cuando tengas un espacio libre, me cuentas y lo cuadramos.</p>
       <div class="opciones">
@@ -217,8 +350,8 @@
       // ID del video de YouTube para la música de fondo (lo que va después de "v=")
       youtube: "Qz9gmiLBVFA", // video oficial de Tacones Rojos
       inicioSegundos: 0, // desde qué segundo empieza la canción
-      // Respaldo: si YouTube no carga, usa "musica.mp3" de la misma carpeta.
-      // Si no existe, suena una melodía suave tipo cajita musical.
+      // Si subes "musica.mp3" al repositorio, se usa ese en lugar de YouTube.
+      // Si nada funciona, suena una melodía suave tipo cajita musical.
       archivoMusica: "musica.mp3",
       frase: "Entre clases, trabajo y mil pendientes, hay personas que hacen que los días se sientan <em>más ligeros</em>.\n\nConocerte ha sido una de esas cosas bonitas que no esperaba.",
       mensajeSi: "¡Hola! 😊 Vi tu invitación y sí, me encantaría vernos el jueves a mi salida del trabajo. Salgo a las ",
@@ -226,35 +359,103 @@
     };
     /* ========================================================== */
 
+    const $ = id => document.getElementById(id);
     document.querySelectorAll(".nombre").forEach(el => el.textContent = CONFIG.nombre);
-    document.getElementById("wspSi").href =
-      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.mensajeSi)}`;
-    document.getElementById("wspOtro").href =
-      `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.mensajeOtro)}`;
+    $("wspSi").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.mensajeSi)}`;
+    $("wspOtro").href = `https://wa.me/${CONFIG.whatsapp}?text=${encodeURIComponent(CONFIG.mensajeOtro)}`;
 
-    // Lucecitas
-    const luces = document.getElementById("luces");
-    for (let i = 0; i < 22; i++) {
-      const l = document.createElement("span");
-      const s = 4 + Math.random() * 10;
-      l.className = "luz";
-      l.style.width = l.style.height = s + "px";
-      l.style.left = Math.random() * 100 + "vw";
-      l.style.animationDuration = 9 + Math.random() * 10 + "s";
-      l.style.animationDelay = Math.random() * 10 + "s";
-      luces.appendChild(l);
+    // Fecha del próximo jueves
+    (() => {
+      const d = new Date();
+      d.setDate(d.getDate() + ((4 - d.getDay() + 7) % 7));
+      const txt = d.toLocaleDateString("es-PE", { weekday: "long", day: "numeric", month: "long" });
+      $("fechaTxt").textContent = (txt.charAt(0).toUpperCase() + txt.slice(1)).replace(",", "") + " · a tu salida";
+    })();
+
+    /* ---------- Cielo estrellado con estrellas fugaces ---------- */
+    const cielo = $("cielo"), cc = cielo.getContext("2d");
+    let W, H, estrellas = [], fugaces = [];
+    function medir() {
+      const dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = innerWidth; H = innerHeight;
+      [cielo, $("confeti")].forEach(c => { c.width = W * dpr; c.height = H * dpr; c.getContext("2d").setTransform(dpr,0,0,dpr,0,0); });
+      estrellas = Array.from({ length: Math.round(W * H / 5000) }, () => ({
+        x: Math.random() * W, y: Math.random() * H, r: Math.random() * 1.3 + .2,
+        f: Math.random() * Math.PI * 2, v: .5 + Math.random() * 1.5
+      }));
+    }
+    medir(); addEventListener("resize", medir);
+    function nuevaFugaz() {
+      fugaces.push({ x: Math.random() * W * .8 + W * .2, y: Math.random() * H * .4, vx: -7 - Math.random() * 4, vy: 3 + Math.random() * 2, vida: 1 });
+      setTimeout(nuevaFugaz, 3500 + Math.random() * 5000);
+    }
+    setTimeout(nuevaFugaz, 2000);
+    function pintarCielo(t) {
+      cc.clearRect(0, 0, W, H);
+      for (const s of estrellas) {
+        const a = .35 + .65 * (0.5 + 0.5 * Math.sin(t / 1000 * s.v + s.f));
+        cc.fillStyle = `rgba(251,243,232,${a})`;
+        cc.beginPath(); cc.arc(s.x, s.y, s.r, 0, 6.283); cc.fill();
+      }
+      fugaces = fugaces.filter(f => f.vida > 0);
+      for (const f of fugaces) {
+        const g = cc.createLinearGradient(f.x, f.y, f.x - f.vx * 12, f.y - f.vy * 12);
+        g.addColorStop(0, `rgba(255,236,210,${f.vida})`); g.addColorStop(1, "rgba(255,236,210,0)");
+        cc.strokeStyle = g; cc.lineWidth = 2; cc.lineCap = "round";
+        cc.beginPath(); cc.moveTo(f.x, f.y); cc.lineTo(f.x - f.vx * 12, f.y - f.vy * 12); cc.stroke();
+        f.x += f.vx; f.y += f.vy; f.vida -= .012;
+      }
+      requestAnimationFrame(pintarCielo);
+    }
+    requestAnimationFrame(pintarCielo);
+
+    /* ---------- Confeti de estrellitas ---------- */
+    const conf = $("confeti"), cf = conf.getContext("2d");
+    let piezas = [], confAnim = false;
+    const colores = ["#f6c89f", "#f2b5b0", "#fbf3e8", "#e8a15a", "#ffd98a"];
+    function estrella(ctx, x, y, r, rot) {
+      ctx.save(); ctx.translate(x, y); ctx.rotate(rot); ctx.beginPath();
+      for (let i = 0; i < 10; i++) {
+        const rr = i % 2 ? r * .45 : r, a = i * Math.PI / 5;
+        ctx.lineTo(Math.cos(a) * rr, Math.sin(a) * rr);
+      }
+      ctx.closePath(); ctx.fill(); ctx.restore();
+    }
+    function explotar(x, y, n = 90) {
+      for (let i = 0; i < n; i++) {
+        const a = Math.random() * Math.PI * 2, v = 4 + Math.random() * 8;
+        piezas.push({ x, y, vx: Math.cos(a) * v, vy: Math.sin(a) * v - 4, r: 4 + Math.random() * 6,
+          rot: Math.random() * 6, vr: (Math.random() - .5) * .3, c: colores[i % colores.length], vida: 1 });
+      }
+      if (!confAnim) { confAnim = true; requestAnimationFrame(pintarConfeti); }
+    }
+    function pintarConfeti() {
+      cf.clearRect(0, 0, W, H);
+      piezas = piezas.filter(p => p.vida > 0 && p.y < H + 20);
+      for (const p of piezas) {
+        p.vy += .22; p.vx *= .985; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.vida -= .008;
+        cf.globalAlpha = Math.max(p.vida, 0); cf.fillStyle = p.c;
+        estrella(cf, p.x, p.y, p.r, p.rot);
+      }
+      cf.globalAlpha = 1;
+      if (piezas.length) requestAnimationFrame(pintarConfeti); else confAnim = false;
     }
 
-    // Cambio de escenas
+    /* ---------- Escenas y progreso ---------- */
+    const pasos = { e2: 1, e3: 2, e4si: 3, e4otro: 3 };
     function ir(id) {
-      document.querySelectorAll(".escena").forEach(e => e.classList.remove("activa"));
-      document.getElementById(id).classList.add("activa");
+      const actual = document.querySelector(".escena.activa");
+      if (actual) { actual.classList.add("sale"); actual.classList.remove("activa"); setTimeout(() => actual.classList.remove("sale"), 900); }
+      $(id).classList.add("activa");
+      const n = pasos[id] || 0;
+      $("progreso").classList.toggle("ver", n > 0);
+      [...$("progreso").children].forEach((d, i) => d.classList.toggle("on", i < n));
     }
 
-    // ---------- Música ----------
-    let sonando = false, audio = null, ctx = null, master = null, timer = null;
+    /* ---------- Música ---------- */
+    let sonando = false, audio = null, ctx = null, master = null;
 
-    // Melodía de respaldo (cajita musical) por si no hay musica.mp3
+    // Melodía de respaldo (cajita musical)
     const melodia = [
       ["E5",1],["G5",1],["C6",2],["B5",1],["G5",1],["A5",2],
       ["F5",1],["A5",1],["D6",2],["C6",1],["A5",1],["B5",2],
@@ -279,10 +480,10 @@
       let t = ctx.currentTime + 0.1, total = 0;
       melodia.forEach(([n, d]) => {
         nota(freq(n), t, pulso);
-        nota(freq(n) / 2, t, pulso * 0.8); // octava baja suave
+        nota(freq(n) / 2, t, pulso * 0.8);
         t += d * pulso; total += d * pulso;
       });
-      timer = setTimeout(tocarMelodia, total * 1000 + 800);
+      setTimeout(tocarMelodia, total * 1000 + 800);
     }
     function iniciarSintetizador() {
       ctx = ctx || new (window.AudioContext || window.webkitAudioContext)();
@@ -293,16 +494,17 @@
       tocarMelodia();
     }
 
-    // ---------- YouTube ----------
+    // YouTube
     let yt = null, ytListo = false, usandoYT = false;
     const tag = document.createElement("script");
     tag.src = "https://www.youtube.com/iframe_api";
     document.head.appendChild(tag);
     window.onYouTubeIframeAPIReady = () => {
       yt = new YT.Player("yt", {
-        width: 1, height: 1, videoId: CONFIG.youtube,
+        width: 200, height: 200, videoId: CONFIG.youtube,
         playerVars: { autoplay: 0, controls: 0, playsinline: 1, loop: 1,
-                      playlist: CONFIG.youtube, start: CONFIG.inicioSegundos },
+                      playlist: CONFIG.youtube, start: CONFIG.inicioSegundos,
+                      origin: location.origin },
         events: {
           onReady: () => { ytListo = true; yt.setVolume(60); },
           onError: () => { if (usandoYT) { usandoYT = false; iniciarRespaldo(); } }
@@ -310,19 +512,18 @@
       });
     };
 
-    // ¿Existe musica.mp3 en el repositorio? Si sí, se usa primero (lo más seguro)
+    // ¿Existe musica.mp3 en el repositorio?
     let hayMp3 = false;
     fetch(CONFIG.archivoMusica, { method: "HEAD" })
       .then(r => { hayMp3 = r.ok && !(r.headers.get("content-type") || "").includes("html"); })
       .catch(() => {});
 
     function iniciarMusica() {
-      document.getElementById("musica").classList.add("mostrar");
+      $("musica").classList.add("mostrar");
       if (hayMp3) { iniciarRespaldo(); return; }
       if (CONFIG.youtube && ytListo) {
         usandoYT = true; sonando = true;
         yt.playVideo();
-        // si en 4 s no arrancó (video bloqueado), usar respaldo
         setTimeout(() => {
           if (usandoYT && yt.getPlayerState() !== YT.PlayerState.PLAYING &&
               yt.getPlayerState() !== YT.PlayerState.BUFFERING) {
@@ -344,22 +545,16 @@
       });
     }
 
-    document.getElementById("musica").addEventListener("click", () => {
-      const b = document.getElementById("musica");
-      if (usandoYT) {
-        sonando ? yt.pauseVideo() : yt.playVideo();
-      } else if (audio) {
-        sonando ? audio.pause() : audio.play();
-      } else if (ctx) {
-        sonando ? ctx.suspend() : ctx.resume();
-      }
+    $("musica").addEventListener("click", () => {
+      if (usandoYT) { sonando ? yt.pauseVideo() : yt.playVideo(); }
+      else if (audio) { sonando ? audio.pause() : audio.play(); }
+      else if (ctx) { sonando ? ctx.suspend() : ctx.resume(); }
       sonando = !sonando;
-      b.textContent = sonando ? "♪" : "🔇";
+      $("musica").classList.toggle("pausa", !sonando);
     });
 
-    // ---------- Texto que se escribe solo ----------
+    /* ---------- Texto que se escribe solo ---------- */
     function escribir(el, html, alTerminar) {
-      // separa etiquetas para no cortarlas
       const partes = html.replace(/\n/g, "<br>").match(/<[^>]+>|[^<]/g);
       let i = 0, salida = "";
       const cursor = '<span class="cursor"></span>';
@@ -373,28 +568,29 @@
       })();
     }
 
-    // ---------- Flujo ----------
+    /* ---------- Flujo ---------- */
     let abierto = false;
     function abrir() {
       if (abierto) return; abierto = true;
       iniciarMusica();
-      document.getElementById("sobre").classList.add("abierto");
+      $("sobre").classList.add("abierto");
+      const r = $("sobre").getBoundingClientRect();
+      setTimeout(() => explotar(r.left + r.width / 2, r.top + 20, 40), 700);
       setTimeout(() => {
         ir("e2");
         setTimeout(() => {
-          escribir(document.getElementById("frase"), CONFIG.frase, () =>
-            document.getElementById("seguir").classList.add("visible"));
+          escribir($("frase"), CONFIG.frase, () => $("seguir").classList.add("visible"));
         }, 900);
-      }, 1100);
+      }, 2000);
     }
-    document.getElementById("sobre").addEventListener("click", abrir);
-    document.getElementById("e1").addEventListener("click", abrir);
-    document.getElementById("seguir").addEventListener("click", () => ir("e3"));
-    document.getElementById("si").addEventListener("click", () => {
-      ir("e4si");
-      setTimeout(() => { window.location.href = document.getElementById("wspSi").href; }, 1200);
+    $("e1").addEventListener("click", abrir);
+    $("seguir").addEventListener("click", () => ir("e3"));
+    $("si").addEventListener("click", e => {
+      explotar(e.clientX || W / 2, e.clientY || H / 2, 120);
+      setTimeout(() => ir("e4si"), 500);
+      setTimeout(() => { window.location.href = $("wspSi").href; }, 2600);
     });
-    document.getElementById("otro").addEventListener("click", () => ir("e4otro"));
+    $("otro").addEventListener("click", () => ir("e4otro"));
   </script>
 </body>
 </html>
