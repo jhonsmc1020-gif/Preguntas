@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <meta name="referrer" content="strict-origin-when-cross-origin" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Para Danna ✨</title>
   <meta name="description" content="Una pequeña invitación" />
@@ -302,7 +303,8 @@
       yt = new YT.Player("yt", {
         width: 200, height: 200, videoId: CONFIG.youtube,
         playerVars: { autoplay: 0, controls: 0, playsinline: 1, loop: 1,
-                      playlist: CONFIG.youtube, start: CONFIG.inicioSegundos },
+                      playlist: CONFIG.youtube, start: CONFIG.inicioSegundos,
+                      origin: location.origin },
         events: {
           onReady: () => { ytListo = true; yt.setVolume(60); },
           onError: () => { if (usandoYT) { usandoYT = false; iniciarRespaldo(); } }
