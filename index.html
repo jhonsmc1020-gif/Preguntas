@@ -215,7 +215,7 @@
       // Tu número con código de país, sin + ni espacios. Perú = 51
       whatsapp: "51926883449",
       // ID del video de YouTube para la música de fondo (lo que va después de "v=")
-      youtube: "5pCbFvon3Rs",
+      youtube: "Qz9gmiLBVFA", // video oficial de Tacones Rojos
       inicioSegundos: 0, // desde qué segundo empieza la canción
       // Respaldo: si YouTube no carga, usa "musica.mp3" de la misma carpeta.
       // Si no existe, suena una melodía suave tipo cajita musical.
@@ -310,8 +310,15 @@
       });
     };
 
+    // ¿Existe musica.mp3 en el repositorio? Si sí, se usa primero (lo más seguro)
+    let hayMp3 = false;
+    fetch(CONFIG.archivoMusica, { method: "HEAD" })
+      .then(r => { hayMp3 = r.ok && !(r.headers.get("content-type") || "").includes("html"); })
+      .catch(() => {});
+
     function iniciarMusica() {
       document.getElementById("musica").classList.add("mostrar");
+      if (hayMp3) { iniciarRespaldo(); return; }
       if (CONFIG.youtube && ytListo) {
         usandoYT = true; sonando = true;
         yt.playVideo();
